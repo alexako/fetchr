@@ -1,12 +1,16 @@
 import Image from "next/image";
 import { Dog } from "@/types/Dog";
+import like from "../public/like.svg";
+import dislike from "../public/dislike.svg";
 
 interface DogCardProps {
   dog: Dog;
   selectedLanguage: string;
+  handleLike: () => void;
+  handleDislike: () => void;
 }
 
-export const DogCard = ({ dog, selectedLanguage }: DogCardProps) => {
+export const DogCard = ({ dog, selectedLanguage, handleDislike, handleLike }: DogCardProps) => {
   const getUnit = (dog: Dog) => {
     const heightString =
       selectedLanguage === "en"
@@ -61,6 +65,10 @@ export const DogCard = ({ dog, selectedLanguage }: DogCardProps) => {
           <div className="dog-card__content__details__item">
             <strong>Origin:</strong> {dog.origin}
           </div>
+        </div>
+        <div className="dog-card__footer">
+          <Image src={dislike} alt="Dislike" onClick={handleDislike} />
+          <Image src={like} alt="Dislike" onClick={handleLike} />
         </div>
       </div>
     </div>
