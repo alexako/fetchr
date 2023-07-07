@@ -17,4 +17,5 @@ export type Dog = {
         imperial: string;
         metric: string;
     },
+    description?: string;
 }
