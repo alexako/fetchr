@@ -83,6 +83,10 @@ export default function Dogs() {
         </select>
       </div>
 
+      <a className="logo" href="/">
+        <Image src={logo} height={115} width={115} alt="fetchr logo" />
+      </a>
+
       { currentDog && 
         <DogCard
           key={currentDog.id}
