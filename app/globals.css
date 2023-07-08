@@ -25,7 +25,6 @@ main {
 .logo {
   display: block;
   width: 115px;
-  margin: 0 auto;
 }
 
 .dog-card {
@@ -42,8 +41,9 @@ main {
 
 .dog-card__image {
   box-shadow: 0 0 0.5rem rgba(var(--background-start-rgb), 0.5);
-  margin: 0 auto;
   max-width: 100%;
+  height: 250px;
+  overflow: hidden;
 }
 
 .dog-card__content {
@@ -97,4 +97,14 @@ main {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
+
+.match-container__image {
+  border-radius: 50%;
+  border: 5px solid #fff;
+  box-shadow: 0 0 0.5rem rgba(var(--background-start-rgb), 0.5);
+  margin: 0 auto;
+  overflow: hidden;
+  height: 200px;
+  width: 200px;
 }

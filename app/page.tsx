@@ -1,11 +1,11 @@
-import Dogs from "./dogs";
+import Main from "./main";
 
 export default function Home() {
 
 
   return (
     <>
-      <Dogs />
+      <Main />
     </>
   );
 }
