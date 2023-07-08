@@ -13,59 +13,71 @@ import logo from "../public/logo.png";
 export default function Main() {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [currentDog, setCurrentDog] = useState<Dog | null>();
-  const [currentDogIndex, setCurrentDogIndex] = useState<number>(0);
+  const [page, setPage] = useState(0);
   const [match, setMatch] = useState<Dog | null>();
   const [selectedLanguage, setSelectedLanguage] = useState("en");
 
-  useEffect(() => {
+  const getTranslation = async (text: string) => {
+    try {
+      return await translate(text, selectedLanguage);
+    } catch (error) {
+      console.error(error);
+      return text;
+    }
+  };
 
-    const getTranslation = async (text: string) => {
-
-      if (selectedLanguage === "en") return text;
-
-      try {
-        const translation = await translate(text, selectedLanguage);
-
-        return translation;
-      } catch (error) {
-        console.error(error);
-        return text;
-      }
-    };
-
-    fetchDogs().then(async (dogs: Dog[]) => {
+  const loadDogs = () => {
+    fetchDogs(page).then(async (dogs: Dog[]) => {
       const translatedDogs = dogs.map(async (dog: Dog) => {
-        const translatedBreedGroup = await getTranslation(dog.breed_group);
-        const translatedBredFor = await getTranslation(dog.bred_for);
-        const translatedTemperament = await getTranslation(dog.temperament);
-        const translatedDescription = dog.description ? await getTranslation(dog.description) : "";
+        const translatedBredFor = dog.bred_for && await getTranslation(dog.bred_for);
+        const translatedTemperament = dog.temperament && await getTranslation(dog.temperament);
+        const translatedDescription = dog.description && await getTranslation(dog.description);
         return {
           ...dog,
-          breed_group: translatedBreedGroup,
-          bred_for: translatedBredFor,
-          temperament: translatedTemperament,
-          description: translatedDescription,
+          bred_for: translatedBredFor || dog.bred_for,
+          temperament: translatedTemperament || dog.temperament,
+          description: translatedDescription || dog.description,
         };
       });
 
       Promise.all(translatedDogs).then((translatedDogs: Dog[]) => {
-        setDogs(translatedDogs);
-        setCurrentDog(translatedDogs[currentDogIndex])
+        setDogs(() => translatedDogs);
+        if (!!!currentDog) {
+          const [firstDog] = translatedDogs;
+          setCurrentDog(() => firstDog);
+        };
       });
     });
-  }, [selectedLanguage, currentDogIndex]);
+  };
+
+  useEffect(() => {
+    if (dogs.length > 3) return;
+    loadDogs();
+    setPage(page => page + 1);
+  }, [currentDog]);
+
+  useEffect(() => {
+    setCurrentDog(() => null);
+    setDogs(() => []);
+    setPage(() => 0)
+    loadDogs();
+  }, [selectedLanguage]);
+
+  const update = () => {
+    const updatedList = dogs.filter(dog => dog.id !== currentDog?.id);
+    setDogs(() => updatedList);
+    const [firstDog] = dogs;
+    setCurrentDog(() => firstDog);
+  }
 
   const handleLike = () => {
     const odds = (Math.random() * 100) < 10;
     if (odds) setMatch(currentDog);
-
-    setCurrentDogIndex(currentDogIndex => currentDogIndex + 1);
-    setCurrentDog(dogs[currentDogIndex]);
+    update();
   }
 
   const handleDislike = () => {
-    setCurrentDogIndex(currentDogIndex => currentDogIndex + 1);
-    setCurrentDog(dogs[currentDogIndex]);
+    update();
   }
 
   const handleLanguageChange = (
@@ -94,13 +106,31 @@ export default function Main() {
         </a>
       </div>
 
-      { currentDog && 
+      { !!currentDog && 
         <DogCard
           key={currentDog.id}
           dog={currentDog}
           handleLike={handleLike}
           handleDislike={handleDislike}
           selectedLanguage={selectedLanguage} />
+      }
+
+      { !!!currentDog &&
+        <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mt-10 mx-auto">
+          <div className="animate-pulse flex space-x-4">
+            <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+            <div className="flex-1 space-y-6 py-1">
+              <div className="h-2 bg-slate-700 rounded"></div>
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                  <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+                </div>
+                <div className="h-2 bg-slate-700 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       }
 
       {match && (
