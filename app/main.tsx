@@ -5,10 +5,12 @@ import fetchDogs from "../dogs";
 import { Dog } from "@/types/Dog";
 import translate from "@/translate";
 import { DogCard } from "./dogCard";
+import MatchModal from "./matchModal";
 import Image from "next/image";
-import itsamatch from "../public/itsamatch.png";
+import logo from "../public/logo.png";
 
-export default function Dogs() {
+
+export default function Main() {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [currentDog, setCurrentDog] = useState<Dog | null>();
   const [currentDogIndex, setCurrentDogIndex] = useState<number>(0);
@@ -18,6 +20,9 @@ export default function Dogs() {
   useEffect(() => {
 
     const getTranslation = async (text: string) => {
+
+      if (selectedLanguage === "en") return text;
+
       try {
         const translation = await translate(text, selectedLanguage);
 
@@ -48,7 +53,7 @@ export default function Dogs() {
         setCurrentDog(translatedDogs[currentDogIndex])
       });
     });
-  }, [selectedLanguage]);
+  }, [selectedLanguage, currentDogIndex]);
 
   const handleLike = () => {
     const odds = (Math.random() * 100) < 10;
@@ -83,9 +88,11 @@ export default function Dogs() {
         </select>
       </div>
 
-      <a className="logo" href="/">
-        <Image src={logo} height={115} width={115} alt="fetchr logo" />
-      </a>
+      <div className="flex justify-center w-full">
+        <a className="block my-0 mx-auto" href="/">
+          <Image src={logo} height={115} width={115} alt="fetchr logo" />
+        </a>
+      </div>
 
       { currentDog && 
         <DogCard
@@ -97,17 +104,7 @@ export default function Dogs() {
       }
 
       {match && (
-        <div className="match-container">
-          <Image src={itsamatch} alt="It's a match" height={75} width={200} />
-
-          <Image src={match.image.url} alt={match.name} height={300} width={300} />
-          <strong>{match.name}</strong>
-          <p>{match.description || match.temperament}</p>
-
-          <button type="button" onClick={() => setMatch(null)}>
-            WOOF!
-          </button>
-        </div>
+        <MatchModal match={match} setMatch={setMatch} />
       )}
     </main>
   );
