@@ -86,11 +86,6 @@ export const DogCard = ({ dog, selectedLanguage, handleDislike, handleLike }: Do
               <strong>Origin:</strong> {dog.origin}
             </div>
           )}
-          { dog.description && (
-            <div className="dog-card__content__details__item">
-              <strong>Description:</strong> {dog.description}
-            </div>
-          )}
         </div>
         <div className="dog-card__footer">
           <div className="dog-card__footer-buttons">
