@@ -8,14 +8,6 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -24,4 +16,96 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+main {
+  min-height: 100vh;
+}
+
+.logo {
+  display: block;
+  width: 115px;
+}
+
+.dog-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem rgba(var(--background-start-rgb), 0.5);
+  color: rgb(var(--foreground-rgb));
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem auto;
+  width: 350px;
+  min-height: 700px;
+}
+
+.dog-card__image {
+  box-shadow: 0 0 0.5rem rgba(var(--background-start-rgb), 0.5);
+  max-width: 100%;
+  height: 250px;
+  width: auto;
+  overflow: hidden;
+}
+
+.dog-card__content {
+  flex-grow: 1;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em 1em;
+}
+
+.dog-card__content__header {
+  font-weight: 700;
+  font-size: 1.75rem;
+}
+
+.dog-card__content__subheader {
+  font-weight: 300;
+  color:rgba(0, 0, 0, 0.75);
+  line-height: 1;
+  font-family: sans-serif;
+}
+
+.dog-card__content__details {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+.dog-card__footer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.dog-card__footer-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0.5rem 0;
+}
+
+.match-container {
+  background: rgba(0, 0, 0, 0.75);
+  color: rgb(var(--background-end-rgb));
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.match-container__image {
+  border-radius: 50%;
+  border: 5px solid #fff;
+  box-shadow: 0 0 0.5rem rgba(var(--background-start-rgb), 0.5);
+  margin: 0 auto;
+  overflow: hidden;
+  height: 200px;
+  width: 200px;
 }
