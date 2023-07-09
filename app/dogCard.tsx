@@ -14,8 +14,8 @@ export const DogCard = ({ dog, selectedLanguage, handleDislike, handleLike }: Do
   const getUnit = (dog: Dog) => {
     const heightString =
       selectedLanguage === "en"
-        ? `${dog.height.imperial} inches`
-        : `${dog.height.metric} centimeters`;
+        ? `${dog.height.imperial} in`
+        : `${dog.height.metric} cm`;
 
     const weightString =
       selectedLanguage === "en"
@@ -103,7 +103,7 @@ export const DogCard = ({ dog, selectedLanguage, handleDislike, handleLike }: Do
               border: "1px solid rgba(0, 0, 0, 0.08)",
               boxShadow: "0px 2px 3px 0 rgba(0, 0, 0, 0.1)",
             }}
-            onClick={handleDislike} />
+            onClick={() => handleDislike()} />
           <Image
             src={like}
             alt="Like"
@@ -117,7 +117,7 @@ export const DogCard = ({ dog, selectedLanguage, handleDislike, handleLike }: Do
               border: "1px solid rgba(0, 0, 0, 0.08)",
               boxShadow: "0px 2px 3px 0 rgba(0, 0, 0, 0.1)",
             }}
-            onClick={handleLike} />
+            onClick={() => handleLike()} />
           </div>
         </div>
       </div>

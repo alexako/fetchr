@@ -43,8 +43,8 @@ export default function Main() {
       Promise.all(translatedDogs).then((translatedDogs: Dog[]) => {
         setDogs(() => translatedDogs);
         if (!!!currentDog) {
-          const [firstDog] = translatedDogs;
-          setCurrentDog(() => firstDog);
+          const [dog1, dog2] = translatedDogs;
+          setCurrentDog(dog2);
         };
       });
     });
@@ -67,7 +67,7 @@ export default function Main() {
     const updatedList = dogs.filter(dog => dog.id !== currentDog?.id);
     setDogs(() => updatedList);
     const [firstDog] = dogs;
-    setCurrentDog(() => firstDog);
+    setCurrentDog(firstDog);
   }
 
   const handleLike = () => {
@@ -133,7 +133,7 @@ export default function Main() {
         </div>
       }
 
-      {match && (
+      { match && (
         <MatchModal match={match} setMatch={setMatch} />
       )}
     </main>
